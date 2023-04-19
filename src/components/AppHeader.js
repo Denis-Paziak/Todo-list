@@ -11,7 +11,6 @@ function AppHeader () {
         setModalOpen(true)
     }
 
-
     return (
         <div className={styles.appHeader}>
             <Button clickHandler={openModal}>Add Task</Button>

@@ -2,10 +2,14 @@ import React, {useState} from 'react';
 import styles from "../styles/modules/modal.module.scss";
 import {MdOutlineClose} from "react-icons/md";
 import Button from "./Button";
+import {useDispatch} from "react-redux";
+import {addTodo} from "../redux/slices/todoSlice";
+import {v4} from "uuid";
 
 const TodoModal = ({modalOpen, setModalOpen}) => {
     const [title, setTitle] = useState('');
     const [status, setStatus] = useState('incomplete');
+    const dispatch = useDispatch();
 
     const closeModal = () => {
         setModalOpen(false)
@@ -13,7 +17,12 @@ const TodoModal = ({modalOpen, setModalOpen}) => {
 
     const formHandler = (e) => {
         e.preventDefault();
-        console.log(title, status)
+        dispatch(addTodo({
+            id: v4(),
+            title,
+            status,
+            time: new Date().toLocaleDateString(),
+        }));
     }
 
     if(!modalOpen) return <></>;
