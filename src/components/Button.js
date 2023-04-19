@@ -5,13 +5,14 @@ const buttonTypes = {
     primary: "primary",
     secondary: "secondary"
 }
-function Button ({children, style = "primary", type}) {
+function Button ({children, style = "primary", type, clickHandler}) {
     let formatStyle = `button--${style}`;
     const classStyle = `${styles.button} ${styles[formatStyle]}`;
 
     return(
         <button
             className={classStyle}
+            onClick={clickHandler}
             type={type === 'submit' ? 'submit' : 'button'}
         >{children}</button>
     )
