@@ -23,6 +23,7 @@ const TodoModal = ({modalOpen, setModalOpen}) => {
             status,
             time: new Date().toLocaleDateString(),
         }));
+        closeModal();
     }
 
     if(!modalOpen) return <></>;
@@ -52,7 +53,7 @@ const TodoModal = ({modalOpen, setModalOpen}) => {
                         </select>
                     </label>
                     <div className={styles.buttonContainer}>
-                        <Button type="submit" >Add Task</Button>
+                        <Button type="submit">Add Task</Button>
                         <Button style="secondary"
                                 clickHandler={closeModal}>Cansel
                         </Button>
