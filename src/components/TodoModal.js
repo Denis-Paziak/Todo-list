@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {addTodo, updateTodo} from "../redux/slices/todoSlice";
 import {v4} from "uuid";
 import {toast} from "react-hot-toast";
+import {AnimatePresence, motion} from "framer-motion";
 
 const TodoModal = ({modalOpen, setModalOpen, type, todo}) => {
     const [title, setTitle] = useState('');
@@ -61,47 +62,65 @@ const TodoModal = ({modalOpen, setModalOpen, type, todo}) => {
                 toast.error("No Changes Made.");
             }
         }
-
-
     }
 
-    if(!modalOpen) return <></>;
+    const modalAnim = {
+        init: {
+            y: 10,
+            opacity: 0
+        },
+        show: {
+            y: 0,
+            opacity: 1
+        },
+        exit: {
+            y: -10,
+            opacity: 0
+        },
+    }
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <div className={styles.closeButton}
-                     onClick={() => setModalOpen(false)}>
-                    <MdOutlineClose/>
-                </div>
-                <form className={styles.form} onSubmit={formHandler}>
-                    <h1 className={styles.formTitle}>{typeText} Task</h1>
-                    <label htmlFor="title">
-                        Title
-                        <input type="text"
-                               id="title"
-                               value={title}
-                               onChange={(e) => {setTitle(e.target.value)}} />
-                    </label>
-                    <label htmlFor="status">
-                        Status
-                        <select name="status"
-                                id="status"
-                                value={status}
-                                onChange={(e) => {setStatus(e.target.value)}} >
-                            <option value="incomplete">Incomplete</option>
-                            <option value="complete">Complete</option>
-                        </select>
-                    </label>
-                    <div className={styles.buttonContainer}>
-                        <Button type="submit">{typeText} Task</Button>
-                        <Button style="secondary"
-                                clickHandler={closeModal}>Cansel
-                        </Button>
+        <AnimatePresence>
+            {modalOpen && <div className={styles.wrapper} >
+                <motion.div className={styles.container}
+                     initial="init"
+                     animate="show"
+                     variants={modalAnim}
+                     exit="exit">
+                    <div className={styles.closeButton}
+                         onClick={() => setModalOpen(false)}>
+                        <MdOutlineClose/>
                     </div>
-                </form>
-            </div>
-        </div>
+                    <form className={styles.form} onSubmit={formHandler}>
+                        <h1 className={styles.formTitle}>{typeText} Task</h1>
+                        <label htmlFor="title">
+                            Title
+                            <input type="text"
+                                   id="title"
+                                   value={title}
+                                   onChange={(e) => {setTitle(e.target.value)}} />
+                        </label>
+                        <label htmlFor="status">
+                            Status
+                            <select name="status"
+                                    id="status"
+                                    value={status}
+                                    onChange={(e) => {setStatus(e.target.value)}} >
+                                <option value="incomplete">Incomplete</option>
+                                <option value="complete">Complete</option>
+                            </select>
+                        </label>
+                        <div className={styles.buttonContainer}>
+                            <Button type="submit">{typeText} Task</Button>
+                            <Button style="secondary"
+                                    clickHandler={closeModal}>Cansel
+                            </Button>
+                        </div>
+                    </form>
+                </motion.div>
+            </div>}
+
+        </AnimatePresence>
     );
 };
 

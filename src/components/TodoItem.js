@@ -6,6 +6,7 @@ import {deleteTodo, updateTodo} from "../redux/slices/todoSlice";
 import {toast} from "react-hot-toast";
 import TodoModal from "./TodoModal";
 import CheckButton from "./CheckButton";
+import {motion} from "framer-motion";
 
 const TodoItem = ({todo}) => {
     const [modalOpen, setModalOpen] = useState(false);
@@ -40,9 +41,14 @@ const TodoItem = ({todo}) => {
         }));
     }
 
+    const item = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1 },
+    }
+
     return (
         <>
-            <div className={`${styles.item} ${styleClass}`}>
+            <motion.div variants={item} className={`${styles.item} ${styleClass}`}>
                 <div className={styles.todoDetails}>
                     <CheckButton checked={checked} checkHandler={checkHandler}/>
                     <div className={styles.texts}>
@@ -58,7 +64,9 @@ const TodoItem = ({todo}) => {
                         <MdEdit />
                     </div>
                 </div>
-            </div>
+
+            </motion.div>
+
             <TodoModal type="update" modalOpen={modalOpen} setModalOpen={setModalOpen} todo={todo}/>
         </>
     );
