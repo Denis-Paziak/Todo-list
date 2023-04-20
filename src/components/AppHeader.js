@@ -9,13 +9,13 @@ function AppHeader () {
     const openModal = () => {
         setModalOpen(true)
     }
+
     return (
         <>
             <div className={styles.appHeader}>
                 <Button clickHandler={openModal}>Add Task</Button>
-                <SelectButton id="status">
+                <SelectButton id="status" >
                     <option value="all">All</option>
-
                     <option value="incomplete">Incomplete</option>
                     <option value="complete">Complete</option>
                 </SelectButton>

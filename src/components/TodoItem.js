@@ -22,6 +22,7 @@ const TodoItem = ({todo}) => {
 
 
     let styleClass = '';
+
     if (checked) {
          styleClass = styles[`todoText--complete`];
     }
