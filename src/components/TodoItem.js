@@ -5,7 +5,7 @@ import {useDispatch} from "react-redux";
 import {deleteTodo} from "../redux/slices/todoSlice";
 import {toast} from "react-hot-toast";
 
-const TodoItem = ({todo}) => {
+const TodoItem = ({todo, setModalOpen}) => {
     const dispatch = useDispatch();
     let styleClass = '';
 
@@ -32,7 +32,7 @@ const TodoItem = ({todo}) => {
                 <div className={styles.icon} onClick={deleteHandler}>
                     <MdDelete />
                 </div>
-                <div className={styles.icon}>
+                <div className={styles.icon} onClick={() => setModalOpen(true)}>
                     <MdEdit />
                 </div>
             </div>
