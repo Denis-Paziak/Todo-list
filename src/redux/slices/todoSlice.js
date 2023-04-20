@@ -38,12 +38,25 @@ export const todoSlice = createSlice({
             });
             state.todoList = newArr;
             addToLocalStorage(newArr);
+        },
+        updateTodo: (state, action) => {
+            let newArr = [...state.todoList];
+
+            newArr.forEach(el => {
+                if(el.id === action.payload.id) {
+                    el.title = action.payload.title;
+                    el.status = action.payload.status;
+                }
+            });
+
+            state.todoList = newArr;
+            addToLocalStorage(newArr);
         }
     }
 });
 
 
-export const {addTodo,deleteTodo} = todoSlice.actions;
+export const {addTodo,deleteTodo,updateTodo} = todoSlice.actions;
 export default todoSlice.reducer;
 
 

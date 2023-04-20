@@ -3,24 +3,30 @@ import styles from "../styles/modules/modal.module.scss";
 import {MdOutlineClose} from "react-icons/md";
 import Button from "./Button";
 import {useDispatch} from "react-redux";
-import {addTodo} from "../redux/slices/todoSlice";
+import {addTodo, updateTodo} from "../redux/slices/todoSlice";
 import {v4} from "uuid";
 import {toast} from "react-hot-toast";
 
-const TodoModal = ({modalOpen, setModalOpen, type}) => {
+const TodoModal = ({modalOpen, setModalOpen, type, todo}) => {
     const [title, setTitle] = useState('');
-    const [typeText, setTypeText] = useState('Add');
     const [status, setStatus] = useState('incomplete');
+    const [typeText, setTypeText] = useState('Add');
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (type === "update") {
             setTypeText("Update");
+            setTitle(todo.title);
+            setStatus(todo.status);
+        }else {
+            setTitle("");
+            setStatus('incomplete');
         }
-    },[typeText]);
+    },[modalOpen]);
 
     const closeModal = () => {
-        setModalOpen(false)
+        setModalOpen(false);
+        setTitle("");
     }
 
     const formHandler = (e) => {
@@ -38,14 +44,25 @@ const TodoModal = ({modalOpen, setModalOpen, type}) => {
                 status,
                 time: new Date().toLocaleDateString(),
             }));
+            toast.success("Todo Added.");
+            closeModal();
         }
 
         if(type === "update") {
-            console.log("update");
+            if (todo.title !== title || todo.status !== status) {
+                dispatch(updateTodo({
+                    ...todo,
+                    title,
+                    status,
+                }));
+                toast.success("Changes Applied.");
+                closeModal();
+            }else {
+                toast.error("No Changes Made.");
+            }
         }
 
-        setTitle("");
-        closeModal();
+
     }
 
     if(!modalOpen) return <></>;
@@ -63,12 +80,14 @@ const TodoModal = ({modalOpen, setModalOpen, type}) => {
                         Title
                         <input type="text"
                                id="title"
+                               value={title}
                                onChange={(e) => {setTitle(e.target.value)}} />
                     </label>
                     <label htmlFor="status">
                         Status
                         <select name="status"
                                 id="status"
+                                value={status}
                                 onChange={(e) => {setStatus(e.target.value)}} >
                             <option value="incomplete">Incomplete</option>
                             <option value="complete">Complete</option>
