@@ -10,10 +10,8 @@ const getInitialTodo = () => {
     }
 };
 
-const setLocalStorage = (data) => {
-    let newData = getInitialTodo();
-    newData.push(data)
-    window.localStorage.setItem('todoList', JSON.stringify(newData))
+const addToLocalStorage = (data) => {
+    window.localStorage.setItem('todoList', JSON.stringify(data))
 };
 
 const initialValue = {
@@ -26,14 +24,26 @@ export const todoSlice = createSlice({
     initialState: initialValue,
     reducers: {
         addTodo: (state, action) => {
-            state.todoList.push(action.payload);
-            setLocalStorage(action.payload);
+            let newArr =  [...state.todoList];
+            newArr.push(action.payload);
+            state.todoList = newArr;
+            addToLocalStorage(newArr);
+        },
+        deleteTodo: (state, action) => {
+            let newArr = [...state.todoList];
+            newArr.forEach((el, index) => {
+                if(el.id === action.payload) {
+                    newArr.splice(index, 1);
+                }
+            });
+            state.todoList = newArr;
+            addToLocalStorage(newArr);
         }
     }
 });
 
 
-export const {addTodo} = todoSlice.actions;
+export const {addTodo,deleteTodo} = todoSlice.actions;
 export default todoSlice.reducer;
 
 
