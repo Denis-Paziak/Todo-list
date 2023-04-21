@@ -64,7 +64,6 @@ const TodoItem = ({todo}) => {
                         <MdEdit />
                     </div>
                 </div>
-
             </motion.div>
 
             <TodoModal type="update" modalOpen={modalOpen} setModalOpen={setModalOpen} todo={todo}/>

@@ -9,15 +9,15 @@ function AppContent() {
     const filterStatus = useSelector(state => state.todo.filterStatus);
 
     const filterTodo = todos.filter(el => {
-       if (filterStatus === 'all') {
-           return true
-       }
+        if (filterStatus === 'all') {
+            return true
+        }
 
-       return  el.status === filterStatus
+        return el.status === filterStatus
     });
 
     const container = {
-        hidden: { opacity: 0, y: 10 },
+        hidden: {opacity: 0},
         show: {
             opacity: 1,
             transition: {
@@ -27,25 +27,23 @@ function AppContent() {
     }
 
     const item = {
-        hidden: { opacity: 0, y: 10 },
-        show: { opacity: 1, y: 0 },
+        hidden: {opacity: 0},
+        show: {opacity: 1},
     }
 
     return (
-            <motion.div className={styles.content__wrapper}
-                        variants={container}
-                        initial="hidden"
-                        animate="show">
+        <motion.div className={styles.content__wrapper}
+                    variants={container}
+                    initial="hidden"
+                    animate="show">
+            <AnimatePresence>
+                {filterTodo.map(el => {
+                    return <TodoItem key={el.id} todo={el}/>
+                }).reverse()}
+            </AnimatePresence>
 
-                <AnimatePresence>
-                    {filterTodo.map(el => {
-                        return <TodoItem key={el.id} todo={el} />
-                    }).reverse()}
-                </AnimatePresence>
-
-                {filterTodo.length === 0 && <motion.p variants={item} className={styles.emptyText}>No Todo Found</motion.p>}
-
-            </motion.div>
+            {filterTodo.length === 0 && <motion.p variants={item} className={styles.emptyText}>No Todo Found</motion.p>}
+        </motion.div>
     );
 }
 
